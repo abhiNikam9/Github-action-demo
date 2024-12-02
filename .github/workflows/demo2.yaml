@@ -1,6 +1,6 @@
 name: Docker Image CI/CD
 env:
-  REGISTRY: action-test2de
+  REGISTRY: action-test2dec
 on:
   push:
     branches:
@@ -27,8 +27,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       
       # Step 4: Build and Push Docker Image
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+      - name: Build and Push Docker Image
         run: |
           # Check if Dockerfile exists
           if [ ! -f Dockerfile ]; then
@@ -49,13 +48,6 @@ jobs:
         # Add error handling
         continue-on-error: false
       
-      # Optional: Scan image for vulnerabilities
-      - name: Scan Docker image
-        uses: anchore/scan-action@v3
-        with:
-          image: ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:latest
-          fail-build: false
-          severity-cutoff: critical
 
 
 
