@@ -1,3 +1,10 @@
+name: image-creation-pipeline
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   generate-image:
     runs-on: ubuntu-latest
@@ -22,9 +29,3 @@ jobs:
         run: |
           echo "Pushing Docker image..."
           docker push ${{ secrets.DOCKER_USERNAME }}/action-test-2dec:latest
-
-
-
-
-
-
