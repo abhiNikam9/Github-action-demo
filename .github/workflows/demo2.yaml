@@ -1,7 +1,7 @@
 name: image-creation-pipeline
 
 env: 
-  REGISTRY: action-test2dec
+  REGISTRY: abhishekgsl/action-test2dec
 
 on:
   push:
