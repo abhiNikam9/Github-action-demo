@@ -25,12 +25,17 @@ jobs:
       - name: Build the Image
         run: docker build -t action-test2dec:latest .
 
-      - name: Enable Debugging
+      - name: Push Docker Image
         run: |
-          set -x
-          docker build -t action-test2dec:latest .
-          docker tag action-test2dec ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
+          docker tag action-test2dec:latest ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest  
+
+      # - name: Enable Debugging
+      #   run: |
+      #     set -x
+      #     docker build -t action-test2dec:latest .
+      #     docker tag action-test2dec ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
+      #     docker push ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
 
       - name: Log out from DockerHub
         run: docker logout
