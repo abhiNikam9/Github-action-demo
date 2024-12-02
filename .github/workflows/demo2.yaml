@@ -1,25 +1,30 @@
-name: image-creation-pipeline
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   generate-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
       - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Build the Docker Image
         run: |
+          echo "DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}"
+          echo "DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}" | head -n 1  # Hide password output, only show part
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Build the image
+        run: |
+          echo "Building Docker image..."
           docker build -t action-test-2dec:latest .
-
+      - name: Tag Docker Image
+        run: |
+          echo "Tagging Docker image..."
+          docker tag action-test-2dec:latest ${{ secrets.DOCKER_USERNAME }}/action-test-2dec:latest
+          docker images  # List images to verify if tagging worked
       - name: Push Docker Image
         run: |
-          docker tag action-test-2dec:latest ${{ secrets.DOCKER_USERNAME }}/action-test-2dec:latest
+          echo "Pushing Docker image..."
           docker push ${{ secrets.DOCKER_USERNAME }}/action-test-2dec:latest
+
+
+
+
+
+
