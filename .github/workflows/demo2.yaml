@@ -1,7 +1,6 @@
 name: image-creation-pipeline
 
-env:  
-  REGISTRY: action-test2dec
+env: REGISTRY: abhishekgsl/action-test2dec
 
 on:
   push:
@@ -23,13 +22,13 @@ jobs:
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secret.DOCKER_USERNAME }}
-          password: ${{ secret.DOCKER_PASSWORD }}
-          
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       -  name: Build and push Docker image
-         id: push
-         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-         with:
+        id: push
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
