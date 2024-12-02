@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       
-      # Step 4: Build and Push Docker Image
+     # Step 4: Build and Push Docker Image
       - name: Build and Push Docker Image
         run: |
           # Check if Dockerfile exists
@@ -43,8 +43,8 @@ jobs:
             --tag ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:latest \
             --tag ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:${{ github.sha }} \
             --output=type=docker \
-            .
-
+            . # THIS IS THE BUILD CONTEXT
+          
           # Push the tagged images
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:${{ github.sha }}
