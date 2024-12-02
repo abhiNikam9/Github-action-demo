@@ -19,8 +19,8 @@ jobs:
         run: docker info
       - name: Build the image
         run: |
-          docker build -t action-test-2dec:latest .
+          docker build -t action-test2dec:latest .
       - name: Push Docker Image
         run: |
-          docker tag action-test-2dec:latest ${{ secrets.DOCKER_USERNAME }}/action-test-2dec:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/action-test-2dec:latest
+          docker tag action-test2dec:latest ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/action-test2dec:latest
