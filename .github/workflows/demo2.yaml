@@ -27,7 +27,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       
       # Step 4: Build and Push Docker Image
-      - name: Build and Push Docker Image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
         run: |
           # Check if Dockerfile exists
           if [ ! -f Dockerfile ]; then
