@@ -1,11 +1,14 @@
 name: Docker Image CI/CD
+
 env:
   REGISTRY: action-test2dec
+
 on:
   push:
     branches:
       - main # Runs the workflow when changes are pushed to the 'main' branch
   workflow_dispatch: # Allows manual triggering of the workflow
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -35,23 +38,13 @@ jobs:
             exit 1
           fi
           
-          # Build the Docker image
-          docker build \
-            -t ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:latest \
-            -t ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:${{ github.sha }} \
+          # Build and tag the Docker image
+          docker buildx build \
+            --tag ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:latest \
+            --tag ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:${{ github.sha }} \
+            --output=type=docker \
             .
-          
-          # Push the images
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:${{ github.sha }}
-        
-        # Add error handling
-        continue-on-error: false
-      
 
-
-
-
-
-
-
+          # Push the tagged images
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.REGISTRY }}:${{ github.sha }}
