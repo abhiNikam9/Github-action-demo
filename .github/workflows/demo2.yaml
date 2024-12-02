@@ -1,37 +1,28 @@
-name: image-creation-pipeline
-
-env:  
-  REGISTRY: action-test2dec
-
+name: Docker Image CI/CD
+env: 
+   REGISTRY: abhishekgsl/action-test2dec
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-
+      - main # Runs the workflow when changes are pushed to the 'main' branch.
 jobs:
-  generate-image:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ secret.DOCKER_USERNAME }}
-          password: ${{ secret.DOCKER_PASSWORD }}
-          
-      -  name: Build and push Docker image
-         id: push
-         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
-         with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      
+    # Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v3
+    # Log in to Docker Hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    # Build the Docker image
+    - name: Build Docker Image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:latest .
+    # Push the Docker image to Docker Hub
+    - name: Push Docker Image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/${{env.REGISTRY}}:latest
