@@ -23,21 +23,21 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build and Push Docker Image
-        run: |
-          export IMAGE_VERSION=pr-${{ github.event.pull_request.number }}-stage
-          IMAGE_TAG=${{ secrets.REGISTRY_LOGIN_SERVER }}/zwing-service:$IMAGE_VERSION
-          docker build . -t $IMAGE_TAG
-          docker push $IMAGE_TAG
-          echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
+      # - name: Build and Push Docker Image
+      #   run: |
+      #     export IMAGE_VERSION=pr-${{ github.event.pull_request.number }}-stage
+      #     IMAGE_TAG=${{ secrets.REGISTRY_LOGIN_SERVER }}/zwing-service:$IMAGE_VERSION
+      #     docker build . -t $IMAGE_TAG
+      #     docker push $IMAGE_TAG
+      #     echo "IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
     
 
-      # - name: 'Build Docker image'
-      #   run: |
-      #     docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/zwing-service:${{ github.sha }}
+      - name: 'Build Docker image'
+        run: |
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/zwing-service:${{ github.sha }}
 
-      # - name: 'Push Docker image'
-      #   run: |
-      #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/zwing-service:${{ github.sha }}
+      - name: 'Push Docker image'
+        run: |
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/zwing-service:${{ github.sha }}
 
 
